@@ -1,26 +1,76 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Todo from "./components/Todo";
+import Addtodo from "./components/Addtodo";
+import Header from "./components/Header";
+import axios from "axios";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import "./App.css";
+
+class App extends Component {
+  state = {
+    todos: []
+  };
+
+  componentDidMount() {
+    axios
+      .get("https://btm-rn.herokuapp.com/api/v1/todo/")
+      .then(res =>
+        this.setState({
+          todos: res.data
+        })
+      );
+  }
+
+  //toggle complete
+  markComplete = id => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed;
+        }
+        return todo;
+      })
+    });
+  };
+
+  // Delete Todo
+  deleteTodo = id => {
+    axios.delete(`https://btm-rn.herokuapp.com/api/v1/todo/${id}`).then(res =>
+      this.setState({
+        todos: [...this.state.todos.filter(todo => todo.id !== id)]
+      })
+    );
+  };
+
+  // Add Todo
+  Addtodo = title => {
+    axios
+      .post("https://jsonplaceholder.typicode.com/todos?", {
+        title,
+        completed: false
+      })
+      .then(res =>
+        this.setState({
+          todos: [...this.state.todos, res.data]
+        })
+      );
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <div className="container">
+          <Header />
+          <Addtodo Addtodo={this.Addtodo} />{" "}
+          <Todo
+            todos={this.state.todos}
+            markComplete={this.markComplete}
+            deleteTodo={this.deleteTodo}
+          />{" "}
+        </div>{" "}
+      </div>
+    );
+  }
 }
 
 export default App;
