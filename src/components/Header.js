@@ -1,18 +1,18 @@
 import React from "react";
 
 function Header() {
-    return (
-        <header style={headerStyle}>
-            <h1> REACT TO-DO APP 2019 </h1>
-        </header>
-    );
+  return (
+    <header style={headerStyle}>
+      <h1> To-do App</h1>
+    </header>
+  );
 }
 
 const headerStyle = {
-    background: "#333",
-    color: "#fff",
-    textAlign: "center",
-    padding: "10px"
+  background: "teal",
+  color: "#fff",
+  textAlign: "center",
+  padding: "12px",
 };
 
 export default Header;

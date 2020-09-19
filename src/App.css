@@ -5,8 +5,8 @@
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-font-family: 'Open Sans', sans-serif;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Open Sans", sans-serif;
   line-height: 1.4;
 }
 
@@ -16,7 +16,9 @@ a {
 }
 
 .container {
-  padding: 0 1rem;
+  /* padding: 0 1rem; */
+  width: 40%;
+  margin: auto;
 }
 
 .btn {
@@ -24,10 +26,14 @@ a {
   border: none;
   background: #555;
   color: #fff;
-  padding: 7px 20px;
+  padding: 10px 20px;
   cursor: pointer;
 }
 
 .btn:hover {
   background: #666;
+}
+
+.checkbox {
+  margin-right: 5px;
 }
