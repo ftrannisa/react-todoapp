@@ -11,6 +11,7 @@ class Todo extends Component {
         deleteTodo={this.props.deleteTodo}
         editTodo={this.props.editTodo}
         todo={todo}
+        getTodo={this.props.getTodo}
       />
     ));
   }

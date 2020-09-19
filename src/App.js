@@ -19,6 +19,16 @@ class App extends Component {
     );
   }
 
+  getTodo = () => {
+    console.log("getTodo");
+    axios.get("https://btm-rn.herokuapp.com/api/v1/todo/").then((res) => {
+      console.log("tes tes tes", res.data.results);
+      this.setState({
+        todos: res.data.results,
+      });
+    });
+  };
+
   markComplete = (_id) => {
     this.setState({
       todos: this.state.todos.map((todo) => {
@@ -57,21 +67,15 @@ class App extends Component {
     axios
       .put(`https://btm-rn.herokuapp.com/api/v1/todo/${_id}`, {
         title,
-        isShowing: true,
       })
       .then(({ data }) => {
-        this.setState((prevSate) => {
-          const { todos } = prevSate;
-          const oldTodoIndex = todos.findIndex((todo) => todo.id === data.id);
-          const newTodo = { ...todos[oldTodoIndex], ...data };
-          todos.splice(oldTodoIndex, 1, newTodo);
-
-          return { todos: todos };
-        });
+        this.getTodo();
       })
       .catch((error) => console.log(error));
   };
+
   render() {
+    console.log(this.state.todos);
     return (
       <div className="App">
         <div className="container">
@@ -82,6 +86,7 @@ class App extends Component {
             markComplete={this.markComplete}
             deleteTodo={this.deleteTodo}
             editTodo={this.editTodo}
+            getTodo={this.getTodo}
           />
         </div>
       </div>

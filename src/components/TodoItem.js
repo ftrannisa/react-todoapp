@@ -2,6 +2,8 @@ import React, { Component, useState } from "react";
 import propTypes from "prop-types";
 
 class TodoItem extends Component {
+  state = { isShowing: false, ketikanUser: "" };
+
   getStyle = () => {
     return {
       borderBottom: "1px #ccc dotted",
@@ -13,51 +15,51 @@ class TodoItem extends Component {
     };
   };
 
-  // toggleForm = () => {
-  //   if (!this.state.isShowing) {
-  //     this.setState({ isShowing: true });
-  //   } else {
-  //     this.setState({ isShowing: false });
-  //   }
-  // };
+  toggleForm = () => {
+    if (!this.state.isShowing) {
+      this.setState({ isShowing: true });
+    } else {
+      this.setState({ isShowing: false });
+    }
+  };
 
-  // showEditTodoForm = () => {
-  //   const { title } = this.props.todo;
+  handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const title = this.state.ketikanUser;
+    const { _id } = this.props.todo;
+    await this.props.editTodo(_id, title);
+    this.setState({ isShowing: false });
+  };
 
-  //   if (this.state.isShowing) {
-  //     return (
-  //       <div>
-  //         <form ref={this.formRef} onSubmit={this.handleFormSubmit}>
-  //           <input
-  //             type="text"
-  //             name="title"
-  //             placeholder="Edit Your Todo"
-  //             defaultValue={title}
-  //           />
-  //           <input type="submit" value="Save" />
-  //         </form>
-  //       </div>
-  //     );
-  //   }
-  // };
+  showEditTodoForm = () => {
+    const { title } = this.props.todo;
 
-  // handleFormSubmit = (e) => {
-  //   e.preventDefault();
+    if (this.state.isShowing) {
+      return (
+        <div>
+          <form ref={this.formRef} onSubmit={this.handleFormSubmit}>
+            <input
+              style={{ padding: "3px" }}
+              type="text"
+              name="title"
+              placeholder="Edit Your Todo"
+              defaultValue={title}
+              onChange={(e) => this.setState({ ketikanUser: e.target.value })}
+            />
+            <input style={{ padding: "3px" }} type="submit" value="Save" />
+          </form>
+        </div>
+      );
+    }
+  };
 
-  //   const title = this.formRef.current["title"].value;
-  //   const { id } = this.props.todo;
-
-  //   this.props.editTodo(id, title);
-  // };
-
-  // onChange = (e) =>
-  //   this.setState({
-  //     [e.target.name]: e.target.value, // demo react tools to show what happens when value changes when typing
-  //   });
+  onChange = (e) =>
+    this.setState({
+      [e.target.name]: e.target.value, // demo react tools to show what happens when value changes when typing
+    });
 
   render() {
     const { _id, title } = this.props.todo;
-
     return (
       <div style={this.getStyle()}>
         <p>
@@ -74,10 +76,10 @@ class TodoItem extends Component {
           >
             <i className="fa">&#xf014;</i>
           </button>
-          <button style={btnStyle}>
+          <button style={btnStyle} onClick={() => this.toggleForm()}>
             <i class="fa fa-pencil"></i>
           </button>
-          {/* {this.showEditTodoForm()} */}
+          {this.showEditTodoForm()}
         </p>
       </div>
     );

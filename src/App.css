@@ -37,3 +37,7 @@ a {
 .checkbox {
   margin-right: 5px;
 }
+
+.submit {
+  background-color: pink;
+}
