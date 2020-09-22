@@ -20,9 +20,7 @@ class App extends Component {
   }
 
   getTodo = () => {
-    console.log("getTodo");
     axios.get("https://btm-rn.herokuapp.com/api/v1/todo/").then((res) => {
-      console.log("tes tes tes", res.data.results);
       this.setState({
         todos: res.data.results,
       });
@@ -30,14 +28,33 @@ class App extends Component {
   };
 
   markComplete = (_id) => {
-    this.setState({
-      todos: this.state.todos.map((todo) => {
-        if (todo._id === _id) {
-          todo.isComplete = !todo.isComplete;
-        }
-        return todo;
-      }),
-    });
+    axios
+      .put(`https://btm-rn.herokuapp.com/api/v1/todo/${_id}`, {
+        _id,
+        isComplete: true,
+      })
+      .then((res) => {
+        //ini
+        this.setState({
+          todos: this.state.todos.map((todo) => {
+            if (todo._id === _id) {
+              todo.isComplete = !todo.isComplete;
+            }
+            return todo;
+          }),
+        });
+      }); //ini
+  };
+
+  editTodo = (_id, title) => {
+    axios
+      .put(`https://btm-rn.herokuapp.com/api/v1/todo/${_id}`, {
+        title,
+      })
+      .then(({ data }) => {
+        this.getTodo();
+      })
+      .catch((error) => console.log(error));
   };
 
   deleteTodo = (_id) => {
@@ -61,17 +78,6 @@ class App extends Component {
           todos: [...this.state.todos, res.data.results],
         })
       );
-  };
-
-  editTodo = (_id, title) => {
-    axios
-      .put(`https://btm-rn.herokuapp.com/api/v1/todo/${_id}`, {
-        title,
-      })
-      .then(({ data }) => {
-        this.getTodo();
-      })
-      .catch((error) => console.log(error));
   };
 
   render() {
